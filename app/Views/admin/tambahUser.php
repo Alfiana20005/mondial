@@ -52,7 +52,7 @@
                       <td><?= $user['user_type']; ?></td>
                       <td>
                       <form action="/status_approve" method="POST">
-                          <input type="hidden" name="id" value="<?= $user['id_user']; ?>">
+                          <input type="hidden" name="id_user" value="<?= $user['id_user']; ?>">
                           <div class="btn-group">
                               <?php if ($user['status_approve'] == 'Diterima'): ?>
                                   <button type="submit" class="btn btn-sm btn-success" name="new_status" value="Belum Diterima">Diterima</button>

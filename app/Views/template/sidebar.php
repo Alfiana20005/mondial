@@ -21,7 +21,7 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      
+      <?php if (session()->get('user_type') == '2' || session()->get('user_type') == '1'): ?>
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#bendahara" aria-expanded="true" aria-controls="bendahara">
           <i class="fas fa-fw fa-dollar-sign"></i>
@@ -38,7 +38,9 @@
           </div>
         </div>
       </li>
-      
+      <?php endif; ?>
+
+      <?php if (session()->get('user_type') == '3' || session()->get('user_type') == '1' || session()->get('user_type') == '4'): ?>
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#petugas" aria-expanded="true" aria-controls="petugas">
           <i class="fas fa-fw fa-wrench"></i>
@@ -54,6 +56,7 @@
           </div>
         </div>
       </li>
+      <?php endif; ?>
 
       
 
@@ -68,7 +71,7 @@
 
       <!--?php } ?-->
 
-      
+      <?php if (session()->get('user_type') == '1'): ?>
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pengaturan" aria-expanded="true" aria-controls="pengaturan">
           <i class="fas fa-fw fa-cog"></i>
@@ -83,7 +86,7 @@
           </div>
         </div>
       </li>
-      
+      <?php endif; ?>
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
