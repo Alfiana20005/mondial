@@ -51,16 +51,17 @@
                       <td><?= $user['email']; ?></td>
                       <td><?= $user['user_type']; ?></td>
                       <td>
-                          <form method="POST" action="/status_approve">
-                              <input type="hidden" name="id_user" value="<?= $user['id_user']; ?>">
+                      <form action="/status_approve" method="POST">
+                          <input type="hidden" name="id" value="<?= $user['id_user']; ?>">
+                          <div class="btn-group">
                               <?php if ($user['status_approve'] == 'Diterima'): ?>
-                                  <input type="hidden" name="new_status" value="Belum Diterima">
-                                  <button type="submit" class="btn btn-success btn-sm">Diterima</button>
+                                  <button type="submit" class="btn btn-sm btn-success" name="new_status" value="Belum Diterima">Diterima</button>
                               <?php else: ?>
-                                  <input type="hidden" name="new_status" value="Diterima">
-                                  <button type="submit" class="btn btn-danger btn-sm">Belum Diterima</button>
+                                  <button type="submit" class="btn btn-sm btn-danger" name="new_status" value="Diterima">Belum Diterima</button>
                               <?php endif; ?>
-                          </form>
+                          </div>
+                      </form>
+
                       </td>
                       <td><img src="<?= base_url('image/profile/' . $user['foto']); ?>" alt="" style="width: 70px;"></td>
                       
