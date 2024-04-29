@@ -48,6 +48,14 @@ class User_Models extends Model
 
         return $totalAnggota;
     }
+
+    public function updateStatus($id, $status_approve)
+    {
+        return $this->db->table('user')
+            ->where('id_user', $id)
+            ->set('status_approve', $status_approve)
+            ->update();
+    }
   
 
     

@@ -7,10 +7,10 @@ use App\Models\User_Models;
 class Login extends BaseController
 {
     protected $helpers = ['form'];
-    protected $User;
+    protected $User_Models;
     public function __construct() {
         helper('form');
-        $this -> User = new User_Models();
+        $this -> User_Models = new User_Models();
     }
     public function index(): string
     {
@@ -50,7 +50,7 @@ class Login extends BaseController
         // Jika validasi berhasil
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
-        $cek = $this->User->login($username, $password);
+        $cek = $this->User_Models->login($username, $password);
         
         if ($cek) {
             // Jika data cocok
@@ -72,10 +72,89 @@ class Login extends BaseController
     }
     
     
+    
 
     public function profile(): string
     {
         return view('login/profile');
+    }
+
+
+    public function logout() {
+        session()->remove('log');
+        session()->remove('nama');
+        session()->remove('username');
+        session()->remove('email');
+        session()->remove('user_type');
+        session()->remove('password');
+        session()->remove('foto');
+        session()->remove('status_approve');
+        
+        session()->setFlashdata('pesanlogout', 'Logout Berhasil');
+            return redirect()->to(base_url('/login'));
+    }
+
+    public function save()
+    {
+        
+        $rules= [
+            'nama' => [
+                'rules' => 'required|max_length[30]|is_unique[user.nama]',
+                'errors' => ['required'=>'Nama harus diisi']
+            ],
+            'username' => [
+                'rules' => 'required|max_length[10]|is_unique[user.username]',
+                'errors' => [
+                    'required'=>'Username tidak boleh kosong',
+                    'max_length' => 'username maximal 10 huruf',
+                    'is_unique' => 'username tidak boleh sama'
+    
+                ]
+            ],
+            'password' => [
+                'rules' => 'required|max_length[10]',
+                'errors' => [
+                    'required'=>'password tidak boleh kosong',
+                    'max_length' => 'password maximal 10 huruf',
+                ]
+            ],
+            'email' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required'=>'email tidak boleh kosong',
+                ]
+            ],
+            'user_type' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required'=>'user type tidak boleh kosong',
+                ]
+            ],
+        ];
+
+        if(!$this->validate($rules)){
+            // session()->setFlashdata('errors', $this->validator->listErrors());
+            return redirect()->to('/register') ->withInput() -> with('errors', $this->validator->listErrors());
+        }
+
+       
+        $this->User_Models->save([
+            
+            'nama' => $this->request->getVar('nama'),
+            'username' => $this->request->getVar('username'),
+            'email' => $this->request->getVar('email'),
+            'password' => $this->request->getVar('password'),
+            'user_type' => $this->request->getVar('user_type'),
+            'status_approve' => $this->request->getVar('status_approve'),
+            
+        ]);
+
+        //alert
+        session()->setFlashdata('pesan', 'Data Berhasil Ditambahkan.');
+
+        return redirect()-> to('/register');
+
+        // return view('admin/v_masterpetugas');
     }
 
 }

@@ -36,7 +36,7 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Buat Akun</h1>
               </div>
-              <form class="user" method="post" id="formDaftar">
+              <form class="user" action="/save_register" method="post" id="formDaftar">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                   <h1 class="h6 text-gray-900 mb-10">Nama</h1>
@@ -44,7 +44,7 @@
                   </div>
                   <div class="col-sm-6">
                   <h1 class="h6 text-gray-900 mb-10">Email</h1>
-                    <input type="text" class="form-control form-control-user" id="nomor_wa" name="nomor_wa" placeholder="Email" required="">
+                    <input type="text" class="form-control form-control-user" id="nomor_wa" name="email" placeholder="Email" required="">
                   </div>
                 </div>
                 <div class="form-group">
@@ -63,11 +63,12 @@
                         <small class="text-danger text-sm">*Password belum sama</small>
                     </div>
                     <input type="hidden" name="sts_repeat" id="sts_repeat" value="0">
-                    <input type="hidden" name="user_type" value="4">
+                    <input type="hidden" name="user_type" value="5">
+                    <input type="hidden" name="status_approve" value="Belum Diterima">
                   </div>
                 </div>
                 <!-- <span class="btn btn-primary btn-user btn-block" onclick="show()"> Daftar Akun</span> -->
-                <button type="button" class="btn btn-primary btn-user btn-block" onclick="simpan()" id="btn" disabled=""> Daftar Akun</button>
+                <button type="submit" class="btn btn-primary btn-user btn-block" id="btn" disabled=""> Daftar Akun</button>
                 
               </form>
               <hr>

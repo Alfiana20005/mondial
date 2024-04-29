@@ -95,6 +95,79 @@ class User extends BaseController
         // Redirect ke halaman yang sesuai
         return redirect()->to('/user');
     }
+    // public function status_approve()
+    // {
+    //     // Pastikan metode yang digunakan adalah POST
+    //     if ($this->request->getMethod() == 'post') {
+    //         // Ambil data ID dan status dari permintaan POST
+    //         $id = $this->request->getPost('id_user');
+    //         $status_approve = $this->request->getPost('new_status');
+
+    //         // Lakukan pembaruan status di database menggunakan model
+    //         $result = $this->User_Models->updateStatus($id, $status_approve);
+
+    //         // Beri respons berdasarkan hasil pembaruan
+    //         if ($result) {
+    //             return redirect()->back();
+    //             // return $this->response->setJSON(['success' => false, 'message' => 'Berhasil']);
+        
+    //         } else {
+    //             return $this->response->setJSON(['success' => false, 'message' => 'Gagal memperbarui status']);
+    //         }
+    //     } else {
+    //         // Jika metode bukan POST, beri respons dengan kesalahan
+    //         return $this->response->setJSON(['success' => false, 'message' => 'Metode yang tidak valid']);
+    //     }
+    // }
+
+    public function status_approve()
+{
+    // Pastikan metode yang digunakan adalah POST
+    if ($this->request->getMethod() == 'post') {
+        // Load library validation
+        $validation = \Config\Services::validation();
+
+        // Set rules validation
+        $validation->setRules([
+            'id_user' => 'required|numeric', // Memastikan id_user ada dan berupa angka
+            'new_status' => 'required', // Memastikan new_status tidak kosong
+        ]);
+
+        // Jalankan validasi
+        if (!$validation->run($this->request->getPost())) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => $validation->getErrors(),
+            ]);
+        }
+
+        // Ambil data ID dan status dari permintaan POST
+        $id = $this->request->getPost('id_user');
+        $status_approve = $this->request->getPost('new_status');
+
+        // Lakukan pembaruan status di database menggunakan model
+        $result = $this->User_Models->updateStatus($id, $status_approve);
+
+        // Beri respons berdasarkan hasil pembaruan
+        if ($result) {
+            return redirect()->back();
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Gagal memperbarui status'
+            ]);
+        }
+    } else {
+        // Jika metode bukan POST, beri respons dengan kesalahan
+        return $this->response->setJSON([
+            'success' => false,
+            'message' => 'Metode yang tidak valid'
+        ]);
+    }
+}
+
+
+
 
 
 
