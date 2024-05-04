@@ -55,6 +55,7 @@ class Login extends BaseController
         if ($cek) {
             // Jika data cocok
             session()->set('log', true);
+            session()->set('id_user', $cek['id_user']);
             session()->set('nama', $cek['nama']);
             session()->set('user_type', $cek['user_type']);
             session()->set('email', $cek['email']);
@@ -74,10 +75,7 @@ class Login extends BaseController
     
     
 
-    public function profile(): string
-    {
-        return view('login/profile');
-    }
+    
 
 
     public function logout() {

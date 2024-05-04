@@ -124,12 +124,27 @@
               <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= session()->get('nama'); ?></span>
               <img class="img-profile rounded-circle" src="<?= base_url('/image/profile/'). session()->get('foto'); ?>">
               </a>
+
+             
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="<?= base_url('/profile') ?>">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
+              <?php
+              // Mendapatkan ID pengguna dari sesi
+              $user_id = session()->get('id_user');
+
+              // Memeriksa apakah ID pengguna tersedia sebelum digunakan
+              if ($user_id !== null) {
+                  ?>
+                  <a class="dropdown-item" href="<?= base_url('/profile/') . $user_id; ?>" >
+                      <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                      Profile
+                  </a>
+                  <?php
+              } else {
+                  // Penanganan jika ID pengguna tidak tersedia
+                  echo "ID pengguna tidak tersedia";
+              }
+              ?>
                 <!-- <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings

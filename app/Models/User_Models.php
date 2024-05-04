@@ -12,7 +12,7 @@ class User_Models extends Model
 
 
     // protected $allowedFields = ['foto', 'nama','password','email','username','level'];
-    protected $allowedFields = ['nama','user_type', 'email', 'password', 'username', 'foto', 'status_approve'];
+    protected $allowedFields = ['id_user','nama','user_type', 'email', 'password', 'username', 'foto', 'status_approve'];
 
 
     protected $validationRules = [];
@@ -56,6 +56,33 @@ class User_Models extends Model
             ->set('status_approve', $status_approve)
             ->update();
     }
+    public function deletePhoto($id_user)
+    {
+        // Dapatkan nama file foto sebelum dihapus
+        $user = $this->find($id_user);
+        $oldPhoto = $user['foto'];
+
+        // Hapus foto dari record user
+        $this->set($this->primaryKey, $id_user)
+            ->update(['foto' => null]);
+
+        // Hapus file foto dari direktori
+        if (!empty($oldPhoto)) {
+            unlink(FCPATH . 'image/profile/' . $oldPhoto);
+        }
+        
+        return true;
+    }
+    public function getUserType($user_type)
+    {
+        return $this->db->table('user_type')
+            ->select('type')
+            ->where('user_type', $user_type)
+            ->get()
+            ->getRowArray();
+    }
+
+
   
 
     

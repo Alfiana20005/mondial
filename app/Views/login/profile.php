@@ -4,6 +4,11 @@
 
        <!-- Begin Page Content -->
         <div class="container-fluid">
+        <?php  if(session()->getFlashdata('pesan')): ?>
+            <div class="alert alert-success" role="alert">
+                <?= session()->getFlashdata('pesan'); ?>
+            </div>
+        <?php endif; ?>
 
           <!-- Page Heading -->
           
@@ -23,39 +28,42 @@
                     <input type="submit" id="submit" name="submit">
                   </form>
                 </div>
-                <img src="<?php echo base_url('image/profile/profile.png') ?>" >
+                <img src="<?= base_url('/image/profile/'). session()->get('foto'); ?>" >
                 <div class="button">
-                    <button class="btn btn-circle btn-dark btn-lg" onclick="edit_image()"><i class="fa fa-pen"></i></button>
-                    <button class="btn btn-circle btn-danger btn-lg" onclick="hapus_image()"><i class="fa fa-trash"></i></button>
+                  
+                    <button class="btn btn-circle btn-dark btn-lg" data-toggle="modal" data-target="#modalUpdateFoto"><i class="fa fa-pen"></i></button>
+                    <!-- <button class="btn btn-circle btn-danger btn-lg" type="submit"><i class="fa fa-trash"></i></button> -->
                 </div>
               </div>
               <!--a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#edit" aria-expanded="true" aria-controls="edit">
                 <img class="foto" src="<?= base_url('image/profile/')?>" alt="">
                 </a-->
-                <div  style="position: absolute; right: 35px" id="edit" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <!-- <div  style="position: absolute; right: 35px" id="edit" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <button class="btn btn-circle btn-success" onclick="edit_image()"><i class="fa fa-pen"></i></button>
-                        <button class="btn btn-circle btn-danger" onclick="hapus_image()"><i class="fa fa-trash"></i></button>
+
+                        
+                          <button  class="btn btn-circle btn-danger" onclick="hapus_image()"><i class="fa fa-trash"></i></button>
                     </div>
-                </div>
+                </div> -->
 
               <div class="content">
                 <form method="post" action="<?= base_url('Profile/edit') ?>">
                   <div class="dropdown-divider"></div>
                   <div class="isi" onclick="edit('1')">
-                      Nama Lengkap <span class="data" id="nama">nama</span>
+                      Nama Lengkap <span class="data" id="nama"><?= session()->get('nama'); ?></span>
                   </div>
                   <div class="dropdown-divider"></div>
                   <div class="isi" onclick="edit('2')">
-                      Nama Pengguna <span class="data" id="username" >username</span>
+                      Nama Pengguna <span class="data" id="username" ><?= session()->get('username'); ?></span>
                   </div>
                   <div class="dropdown-divider"></div>
                   <div class="isi" onclick="edit('3')">
-                      Email <span class="data" id="email">email</span>
+                      Email <span class="data" id="email"><?= session()->get('email'); ?></span>
                   </div>
                   <div class="dropdown-divider"></div>
                   <div class="isi">
-                      Type <span class="data">usertype</span>
+                      Status <span class="data"><?= $type['type'] ?></span>
                   </div-->
                   <div class="dropdown-divider"></div>
                   <span class="btn btn-primary btn-icon-split reset_pass" data-toggle="modal" data-target="#modalResetPassword">
@@ -84,7 +92,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="formAll" class="form-row">
+        <form action="/updatePass/ <?= $user['id_user'] ?>" id="formAll" class="form-row" >
             <input type="hidden" name="id" id="id" value="">
 
           <div class="form-group col-md-12">
@@ -106,15 +114,65 @@
             <input type="hidden" name="sts_repeat" id="sts_repeat" value="0">
           </div>
 
+          <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="btn" disabled="">Save changes</button>
+      </div>
+
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="btn" onclick="save()" disabled="">Save changes</button>
-      </div>
+      
     </div>
   </div>
 </div>
+<div class="modal fade" id="modalUpdateFoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Foto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+        <div class="modal-body">
+
+          <form action="/updateFoto/ <?= $user['id_user'] ?>" method="post" enctype="multipart/form-data">
+            <!-- <label for="foto" class="col-sm-2 col-form-label">Gambar</label> -->
+            <?= csrf_field() ?>  
+            <!-- <div class="col-sm-10"> -->
+                  <!-- <label for="foto" class="col-sm-2 col-form-label">Foto</label> -->
+                    <div class="col-sm-2">
+                        <!-- <img src="/image/profile.jpg" alt="" class="img-thumbnail img-preview"> -->
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input form-control" id="foto" name="foto" onchange="previewImg('foto')">
+                            <label class="custom-file-label" for="customFile">Masukkan Foto Anda</label>
+                            <?php if (!empty($user['foto'])): ?>
+                                <div class="my-2">
+                                    <p>Foto Saat Ini:</p>
+                                    <img src="<?= base_url('image/profile/' . $user['foto']); ?>" alt="Foto Petugas" width="80 " class="mb-4">
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+              <!-- </div> -->
+                
+          
+              <div class="modal-footer my-4">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="btn" >Save changes</button>
+              </div>
+          </form>
+      
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -320,10 +378,6 @@
           swal("Foto Tidak jadi dihapus!");
         }
       });
-    }
-
-    function edit_image() {
-      $("#foto").click();
     }
 
     function ok() {
